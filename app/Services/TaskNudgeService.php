@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AppSetting;
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -86,7 +87,7 @@ class TaskNudgeService
         return [
             'title' => $prefix,
             'body' => $body.': '.$task->title,
-            'url' => route('dashboard'),
+            'url' => AppSetting::publicAppUrl().route('dashboard', absolute: false),
             'tag' => 'top3-task-'.$task->id,
             'task_id' => $task->id,
             'status' => $status,

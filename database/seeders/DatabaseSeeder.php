@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AppSetting;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,6 +18,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        AppSetting::setPublicAppUrl(config('app.url'));
+
         $admin = User::query()->updateOrCreate(
             ['email' => 'admin@example.com'],
             [

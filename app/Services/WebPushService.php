@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AppSetting;
 use App\Models\PushSubscription as StoredSubscription;
 use App\Models\Task;
 use Minishlink\WebPush\Subscription;
@@ -13,7 +14,7 @@ class WebPushService
     {
         return filled(config('services.webpush.public_key'))
             && filled(config('services.webpush.private_key'))
-            && filled(config('services.webpush.subject'));
+            && filled(AppSetting::publicAppUrl());
     }
 
     public function sendTask(Task $task, array $payload): array
@@ -29,7 +30,7 @@ class WebPushService
 
         $webPush = new WebPush([
             'VAPID' => [
-                'subject' => config('services.webpush.subject'),
+                'subject' => AppSetting::publicAppUrl(),
                 'publicKey' => config('services.webpush.public_key'),
                 'privateKey' => config('services.webpush.private_key'),
             ],

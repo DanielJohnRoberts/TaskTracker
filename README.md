@@ -161,11 +161,14 @@ VMID=240 CT_HOSTNAME=top3-tasks APP_URL=https://tasks.example.com bash -c "$(cur
 
 By default, the script clones `https://github.com/DanielJohnRoberts/TaskTracker.git`. Override `REPO_URL` if you fork or move the repo. For private repositories, use a deploy token URL or configure SSH access inside the LXC before cloning. For mobile push outside `localhost`, place the app behind HTTPS and set `APP_URL` to that public HTTPS URL.
 
+After install, admins can change the public app URL from `/admin/settings`. That setting is stored in the database and is used for Web Push notification click URLs and VAPID identification. It does not rewrite `.env`.
+
 ## Main Files
 
 - `app/Models/Task.php` - task fields, dashboard eligibility, ranking, snooze release
 - `app/Http/Controllers/AuthController.php` - login and logout
 - `app/Http/Controllers/Admin/UserController.php` - admin-only user creation and role editing
+- `app/Http/Controllers/Admin/SettingsController.php` - admin-managed public app URL
 - `app/Http/Controllers/DashboardController.php` - dashboard queries and counts
 - `app/Http/Controllers/TaskController.php` - capture, edit, complete, urgent, snooze, block, delete
 - `app/Http/Controllers/ReminderController.php` - notification polling endpoint

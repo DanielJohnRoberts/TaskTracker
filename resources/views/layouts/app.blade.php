@@ -27,6 +27,7 @@
                 <span>{{ Auth::user()->username }}</span>
                 <a href="{{ route('reports') }}">Reports</a>
                 @if (Auth::user()->isAdmin())
+                    <a href="{{ route('admin.settings.edit') }}">Settings</a>
                     <a href="{{ route('admin.users.index') }}">Users</a>
                 @endif
                 <form method="POST" action="{{ route('logout') }}">

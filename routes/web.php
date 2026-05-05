@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -36,6 +37,8 @@ Route::middleware('auth')->group(function (): void {
     Route::delete('/api/push-subscriptions', [PushSubscriptionController::class, 'destroy'])->name('api.push.destroy');
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function (): void {
+        Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
+        Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');

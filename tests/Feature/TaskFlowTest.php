@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\AppSetting;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\TaskNudgeService;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -205,6 +207,37 @@ class TaskFlowTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_admin_can_update_public_app_url_setting(): void
+    {
+        $admin = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        $this->actingAs($admin)
+            ->from(route('admin.settings.edit'))
+            ->put(route('admin.settings.update'), [
+                'public_app_url' => 'https://tasks.example.com/',
+            ])
+            ->assertRedirect(route('admin.settings.edit'));
+
+        $this->assertSame('https://tasks.example.com', AppSetting::publicAppUrl());
+        $this->assertDatabaseHas('app_settings', [
+            'key' => AppSetting::PUBLIC_APP_URL,
+            'value' => 'https://tasks.example.com',
+        ]);
+    }
+
+    public function test_basic_users_cannot_access_admin_settings(): void
+    {
+        $user = User::factory()->create([
+            'role' => 'user',
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('admin.settings.edit'))
+            ->assertForbidden();
+    }
+
     public function test_reports_show_current_users_task_signals_only(): void
     {
         $user = User::factory()->create();
@@ -307,5 +340,20 @@ class TaskFlowTest extends TestCase
             'status' => 'captured',
             'nudge_count' => 0,
         ]);
+    }
+
+    public function test_push_payload_uses_public_app_url_setting(): void
+    {
+        AppSetting::setPublicAppUrl('https://tasks.example.com');
+
+        $user = User::factory()->create();
+        $task = Task::query()->create([
+            'user_id' => $user->id,
+            'title' => 'Use configured URL',
+        ]);
+
+        $payload = app(TaskNudgeService::class)->pushPayload($task, 'nudged');
+
+        $this->assertSame('https://tasks.example.com/dashboard', $payload['url']);
     }
 }
