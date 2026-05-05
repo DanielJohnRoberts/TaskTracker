@@ -3,11 +3,11 @@ set -Eeuo pipefail
 
 # Create a Proxmox LXC and install Top 3 Tasks from a Git repository.
 # Run this on the Proxmox host as root:
-#   REPO_URL=https://github.com/you/top3-tasks.git ./scripts/proxmox-lxc-install.sh
+#   ./scripts/proxmox-lxc-install.sh
 
 VMID="${VMID:-230}"
 HOSTNAME="${HOSTNAME:-top3-tasks}"
-REPO_URL="${REPO_URL:-}"
+REPO_URL="${REPO_URL:-https://github.com/DanielJohnRoberts/TaskTracker.git}"
 BRANCH="${BRANCH:-main}"
 TEMPLATE_STORAGE="${TEMPLATE_STORAGE:-local}"
 CONTAINER_STORAGE="${CONTAINER_STORAGE:-local-lvm}"
@@ -31,7 +31,7 @@ require() {
 
 if [[ -z "$REPO_URL" ]]; then
     echo "REPO_URL is required, for example:" >&2
-    echo "  REPO_URL=https://github.com/you/top3-tasks.git $0" >&2
+    echo "  REPO_URL=https://github.com/DanielJohnRoberts/TaskTracker.git $0" >&2
     exit 1
 fi
 

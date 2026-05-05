@@ -150,16 +150,16 @@ The repo includes a Proxmox host bootstrap script at `scripts/proxmox-lxc-instal
 Run it on the Proxmox host as root:
 
 ```bash
-REPO_URL=https://github.com/your-user/top3-tasks.git ./scripts/proxmox-lxc-install.sh
+./scripts/proxmox-lxc-install.sh
 ```
 
 Useful overrides:
 
 ```bash
-VMID=240 HOSTNAME=top3-tasks APP_URL=https://tasks.example.com REPO_URL=https://github.com/your-user/top3-tasks.git ./scripts/proxmox-lxc-install.sh
+VMID=240 HOSTNAME=top3-tasks APP_URL=https://tasks.example.com ./scripts/proxmox-lxc-install.sh
 ```
 
-For private repositories, use a deploy token URL or configure SSH access inside the LXC before cloning. For mobile push outside `localhost`, place the app behind HTTPS and set `APP_URL` to that public HTTPS URL.
+By default, the script clones `https://github.com/DanielJohnRoberts/TaskTracker.git`. Override `REPO_URL` if you fork or move the repo. For private repositories, use a deploy token URL or configure SSH access inside the LXC before cloning. For mobile push outside `localhost`, place the app behind HTTPS and set `APP_URL` to that public HTTPS URL.
 
 ## Main Files
 
