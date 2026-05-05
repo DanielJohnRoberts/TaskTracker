@@ -6,7 +6,7 @@ set -Eeuo pipefail
 #   bash -c "$(curl -fsSL https://raw.githubusercontent.com/DanielJohnRoberts/TaskTracker/main/install-proxmox.sh)"
 
 VMID="${VMID:-230}"
-HOSTNAME="${HOSTNAME:-top3-tasks}"
+CT_HOSTNAME="${CT_HOSTNAME:-top3-tasks}"
 REPO_URL="${REPO_URL:-https://github.com/DanielJohnRoberts/TaskTracker.git}"
 BRANCH="${BRANCH:-main}"
 TEMPLATE_STORAGE="${TEMPLATE_STORAGE:-local}"
@@ -63,9 +63,9 @@ if ! pveam list "$TEMPLATE_STORAGE" | awk -F/ '{print $NF}' | grep -qx "$TEMPLAT
     pveam download "$TEMPLATE_STORAGE" "$TEMPLATE"
 fi
 
-echo "Creating LXC $VMID ($HOSTNAME)..."
+echo "Creating LXC $VMID ($CT_HOSTNAME)..."
 pct create "$VMID" "$TEMPLATE_STORAGE:vztmpl/$TEMPLATE" \
-    --hostname "$HOSTNAME" \
+    --hostname "$CT_HOSTNAME" \
     --cores "$CORES" \
     --memory "$MEMORY" \
     --swap "$SWAP" \
