@@ -145,18 +145,18 @@ If the host does not allow shell access, import `database/schema.sql` in phpMyAd
 
 ## Proxmox LXC Setup
 
-The repo includes a Proxmox host bootstrap script at `scripts/proxmox-lxc-install.sh`. It creates a Debian 12 LXC, installs Nginx, PHP, MariaDB, Composer, clones this Git repo, runs migrations/seeds, and enables the Laravel scheduler for push notifications.
+The repo includes a Proxmox host bootstrap script at `install-proxmox.sh`. It creates a Debian 12 LXC, installs Nginx, PHP, MariaDB, Composer, clones this Git repo, runs migrations/seeds, and enables the Laravel scheduler for push notifications.
 
-Run it on the Proxmox host as root:
+Clean install from the Proxmox host:
 
 ```bash
-./scripts/proxmox-lxc-install.sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/DanielJohnRoberts/TaskTracker/main/install-proxmox.sh)"
 ```
 
 Useful overrides:
 
 ```bash
-VMID=240 HOSTNAME=top3-tasks APP_URL=https://tasks.example.com ./scripts/proxmox-lxc-install.sh
+VMID=240 HOSTNAME=top3-tasks APP_URL=https://tasks.example.com bash -c "$(curl -fsSL https://raw.githubusercontent.com/DanielJohnRoberts/TaskTracker/main/install-proxmox.sh)"
 ```
 
 By default, the script clones `https://github.com/DanielJohnRoberts/TaskTracker.git`. Override `REPO_URL` if you fork or move the repo. For private repositories, use a deploy token URL or configure SSH access inside the LXC before cloning. For mobile push outside `localhost`, place the app behind HTTPS and set `APP_URL` to that public HTTPS URL.
@@ -179,7 +179,8 @@ By default, the script clones `https://github.com/DanielJohnRoberts/TaskTracker.
 - `public/assets/app.js` - notification permission and reminder polling
 - `public/sw.js` - service worker for push notification display
 - `public/manifest.webmanifest` - PWA manifest
-- `scripts/proxmox-lxc-install.sh` - Proxmox LXC installer
+- `install-proxmox.sh` - one-command Proxmox LXC installer
+- `scripts/proxmox-lxc-install.sh` - compatibility wrapper for the Proxmox installer
 - `public/assets/style.css` - responsive UI
 - `database/schema.sql` - MySQL schema
 
